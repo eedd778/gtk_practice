@@ -1,0 +1,49 @@
+ << "var dom = document.getElementById(\"container\");" << endl
+        << "var myChart = echarts.init(dom);" << endl
+        << "var app = {};" << endl
+        << "option = null;" << endl
+        << "function dataFormatter(obj) {" << endl
+        << "  var pList = [";
+    for (int i = 0; i < open.size() - 1; i++)
+      out << "\'" << open[i].name << "\',";
+    out << "\'" << open[open.size() - 1].name << "\'"
+        << "];" << endl
+        << "  var temp;" << endl
+        << "  for (var month = 1; month <= " << open.size() << "; month++) {" << endl
+        << "    temp = obj[month.toString()];" << endl
+        << "    obj[month + 'sum'] = temp[0];" << endl
+        << "    for (var i = 1, len = temp.length; i < len; i++) {" << endl
+        << "      obj[month.toString()][i] = {" << endl
+        << "        name : pList[i]," << endl
+        << "        value : temp[i]}}" << endl
+        << "    obj[month.toString()].shift()}" << endl
+        << "  return obj;}" << endl
+        << "dataMap.dataMonth = dataFormatter({" << endl;
+    for (int i = 0; i < open.size() - 1; i++)
+    {
+      out << "  \'" << open[i].name << "\':[";
+      for (int j = 0; j < open[i].result.size() - 1; j++)
+      {
+        out << open[i].result[j] << ",";
+      }
+      out << open[i].result[open[i].result.size() - 1] << "]" << endl;
+    }
+    out << "  \'" << open[open.size() - 1].name << "\':[";
+    for (int j = 0; j < open[open.size() - 1].result.size() - 1; j++)
+    {
+      out << open[open.size() - 1].result[j] << ",";
+    }
+    out << open[open.size() - 1].result[open[open.size() - 1].result.size() - 1] << "]});" << endl
+        << "option = {" << endl
+        << "  baseOption: {" << endl
+        << "    timeline: {" << endl
+        << "      y:'top'," << endl
+        << "      axisType: 'category'," << endl
+        << "      autoPlay: false," << endl
+        << "      controlStyle:{show:false}," << endl
+        << "      show:true," << endl
+        << "      data:[";
+    for (int i = 0; i < open.size() - 1; i++)
+      out << "\'" << open[i].name << "\',";
+    out << "\'" << open[open.size() - 1].name << "\'"
+        << "];" << endl;

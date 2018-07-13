@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html style="height: 100%">
+  <head>
+    <meta charset="utf-8">
+  </head>
+  <body style="height: 100%; margin: 0">
+  <div id="container" style="height: 100%"></div>
+    <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/echarts.min.js"></script>
+    <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts-gl/echarts-gl.min.js"></script>
+    <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts-stat/ecStat.min.js"></script>
+    <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/extension/dataTool.min.js"></script>
+    <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/map/js/china.js"></script>
+    <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/map/js/world.js"></script>
+    <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=ZUONbpqGBsYGXNIYHicvbAbM"></script>
+    <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/extension/bmap.min.js"></script>
+    <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/simplex.js"></script>
+    <script type="text/javascript">
+var dom = document.getElementById("container");
+var myChart = echarts.init(dom);
+var app = {};
+option = null;
+dataMap = {};
+function dataFormatter(obj) {
+  var pList = ['S1043347.cpp','s1043353.cpp','s1043343.cpp'];
+  var temp;
+  for (var month = 1; month <= 3; month++) {
+    temp = obj[month.toString()];
+    obj[month + 'sum'] = temp[0];
+    for (var i = 1, len = temp.length; i < len; i++) {
+      obj[month.toString()][i] = {
+        name : pList[i],
+        value : temp[i]}}
+    obj[month.toString()].shift()}
+  return obj;}
+
+dataMap.dataMonth = dataFormatter({
+  '1':[0,0,62,52],
+  '2':[0,58,0,58],
+  '3':[0,53,62,0]});
+option = {
+  baseOption: {
+       timeline: {
+      y:'top',
+      axisType: 'category',
+      autoPlay: false,
+      controlStyle:{show:false},
+      show:true,
+      data: ['S1043347.cpp','s1043353.cpp','s1043343.cpp']},
+        title: {
+      text: '資料比對結果'},
+    calculable : true,
+    xAxis: [ {
+      name : "檔案名",
+      type:'category',
+      axisLabel:{'interval':0},
+      data: ['S1043347.cpp','s1043353.cpp','s1043343.cpp'],
+      splitLine: {show: false}}],
+        yAxis: [ {
+      type: 'value',
+      name: '相似度(%)',
+      max : 100 }],
+    series: [{ type: 'bar'},]},
+    options: [ 
+  {series: [
+    {data: dataMap.dataMonth['1']}] },
+  {series: [
+    {data: dataMap.dataMonth[2]}] },
+  {series: [
+    {data: dataMap.dataMonth['3']}] } ]};
+if (option && typeof option === "object") 
+{myChart.setOption(option, true);}
+    </script>
+  </body>
+</html>
